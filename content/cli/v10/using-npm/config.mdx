@@ -3,18 +3,12 @@ title: config
 section: 7
 description: More than you probably want to know about npm configuration
 github_repo: npm/cli
-github_branch: latest
+github_branch: release/v10
 github_path: docs/lib/content/using-npm/config.md
 redirect_from:
-  - /cli-documentation/misc/config
-  - /cli-documentation/using-npm/config
   - /cli-documentation/v10/misc/config
   - /cli-documentation/v10/using-npm/config
-  - /cli/misc/config
-  - /cli/using-npm/config
   - /cli/v10/misc/config
-  - /misc/config
-  - /using-npm/config
 ---
 
 ### Description
@@ -880,7 +874,7 @@ The "prerelease identifier" to use as a prefix for the "prerelease" part of a se
 - Default: `true` unless running in a known CI system
 - Type: Boolean
 
-When set to `true`, npm will display a progress bar during time intensive operations, if `process.stderr` is a TTY.
+When set to `true`, npm will display a progress bar during time intensive operations, if `process.stderr` and `process.stdout` are a TTY.
 
 Set to `false` to suppress the progress bar.
 
@@ -1135,9 +1129,11 @@ See also the `ca` config.
 
 If you ask npm to install a package and don't tell it a specific version, then it will install the specified tag.
 
-Also the tag that is added to the package@version specified by the `npm tag` command, if no explicit tag is given.
+It is the tag added to the package@version specified in the `npm dist-tag add` command, if no explicit tag is given.
 
 When used by the `npm diff` command, this is the tag used to fetch the tarball that will be compared with the local files by default.
+
+If used in the `npm publish` command, this is the tag that will be added to the package submitted to the registry.
 
 #### `tag-version-prefix`
 

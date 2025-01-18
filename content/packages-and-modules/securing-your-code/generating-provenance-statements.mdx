@@ -36,7 +36,7 @@ Before you can publish your packages with provenance, you must:
 
 - Install the latest version of the npm CLI (ensure you are on `9.5.0+` as older versions don't support npm provenance). For more information, see "[Try the latest stable version of npm][update-npm]."
 
-- Ensure your `package.json` is configured with a public `repository` that matches where you are publishing with provenance from.
+- Ensure your `package.json` is configured with a public `repository` that matches (case-sensitive) where you are publishing with provenance from.
 
 - Set up automation with a supported CI/CD provider to publish your packages to the npm registry. The following providers are supported:
   - GitHub Actions. For more information, see "[Publishing packages with provenance via GitHub Actions][github-provenance]."
@@ -81,7 +81,7 @@ This example workflow publishes a package to the npm registry with provenance.
 name: Publish Package to npmjs
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -89,12 +89,11 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g npm
       - run: npm ci
       - run: npm publish --provenance --access public
         env:
@@ -107,12 +106,15 @@ If you publish your packages with tools that do not directly invoke the `npm pub
 
 - **Configure environment variables:** In your GitHub Actions workflow, you can use an environment variable called `NPM_CONFIG_PROVENANCE`, and set it to `true`.
 - **Configure your `package.json` file:** You can add a `publishConfig` block to your `package.json` file:
+
   ```json
   "publishConfig": {
     "provenance": true
   },
   ```
+
 - **Add an `.npmrc` file:** You can add an `.npmrc` file to your project with the following entry:
+
   ```ini
   provenance=true
   ```
@@ -129,7 +131,7 @@ In order to establish provenance, you must use a supported cloud CI/CD provider 
 
 ### Example GitLab CI job
 
-This example job publishes a package to the npm registry with provenance when a git tag is pushed. Don’t forget to define the `NPM_TOKEN` variable in your GitLab project settings.
+This example job publishes a package to the npm registry with provenance when a git tag is pushed. Don't forget to define the `NPM_TOKEN` variable in your GitLab project settings.
 
 ```yaml
 publish:
